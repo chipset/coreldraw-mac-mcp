@@ -1,15 +1,20 @@
 {
   "name": "coreldraw-mcp-macos",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "Local stdio MCP bridge for CorelDRAW on macOS",
   "license": "MIT",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node src/server.mjs",
     "test": "node --test test/*.test.mjs",
-    "check": "node --check src/server.mjs && node --check src/tools.mjs && node --check src/bridge.mjs && node --check src/document.mjs && node --check src/editor.mjs && node --check src/files.mjs && node --check src/workflows.mjs && node --check src/pages.mjs && node --check src/inspection.mjs && node --check src/object-operations.mjs",
-    "native:consolidation": "node examples/accept-consolidation.mjs"
+    "check": "node --check src/bridge.mjs && node --check src/document.mjs && node --check src/editor.mjs && node --check src/files.mjs && node --check src/inspection.mjs && node --check src/object-operations.mjs && node --check src/pages.mjs && node --check src/server.mjs && node --check src/tools.mjs && node --check src/workflows.mjs && node --check graphtec/cli.mjs && node --check graphtec/corel.mjs && node --check graphtec/job.mjs && node --check graphtec/prepare.mjs && node --check graphtec/service.mjs && node --check graphtec/transport.mjs",
+    "native:consolidation": "node examples/accept-consolidation.mjs",
+    "sender": "node graphtec/cli.mjs",
+    "sender:build": "./scripts/build-sender.sh",
+    "sender:test": "swift test --package-path sender"
   }
 }

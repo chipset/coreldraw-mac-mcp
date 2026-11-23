@@ -6,6 +6,7 @@ import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
+import {tools} from '../src/tools.mjs';
 
 const stamp = new Date().toISOString().replace(/[:.]/g,'-');
 const priorPath = process.argv[2] === '--continue-after-verified-delete' ? process.argv[3] : null;
@@ -59,8 +60,7 @@ async function call(suffix,args={},expectedError=false){
 }
 try{
   const init=await request('initialize',{protocolVersion:'2025-11-25',capabilities:{},clientInfo:{name:'consolidation-acceptance',version:'1'}});
-  assert.equal(init.serverInfo.version,'0.3.0');
-  const catalog=await request('tools/list');assert.equal(catalog.tools.length,47);
+  const catalog=await request('tools/list');assert.equal(catalog.tools.length,tools.length);
   await writeFile(join(output,'tool-catalog.json'),JSON.stringify(catalog.tools,null,2));
   const reference=await request('resources/read',{uri:'coreldraw://reference'});assert.match(reference.contents[0].text,/StaticID/);
   const before=prior?prior.target.before:await call('list_documents');

@@ -3,6 +3,7 @@ import { CorelBridge } from './bridge.mjs';
 import { buildOperation, tools } from './tools.mjs';
 import { open } from 'node:fs/promises';
 import { constants } from 'node:fs';
+import { prepareJobFile } from '../graphtec/prepare.mjs';
 
 const versions = ['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25'];
 const maxBytes = 1024 * 1024;
@@ -45,7 +46,7 @@ async function dispatch(message) {
     success(id, {
       protocolVersion: versions.includes(params.protocolVersion) ? params.protocolVersion : versions.at(-1),
       capabilities: { tools: { listChanged: false }, resources: { subscribe: false, listChanged: false } },
-      serverInfo: { name: 'coreldraw-mcp-macos', version: '0.3.0' },
+      serverInfo: { name: 'coreldraw-mcp-macos', version: '0.4.0' },
       instructions: 'Local CorelDRAW Mac JavaScript bridge. Requires running CorelDRAW, unlocked desktop, English UI, and Accessibility permission. List documents first and pass the returned document id; edits require explicit targeting when multiple documents are open and saves always do. Ids change after Save As/rename. Structured edits use Undo command groups, not rollback; batches report partial failures. UI execution is serialized. Cancellation after dispatch keeps observing until result or deadline; inspect before retrying a timeout. Native JavaScript uses host, not Node/browser APIs. The raw JavaScript tool retains unrestricted native behavior.',
     });
     return;
@@ -67,7 +68,8 @@ async function dispatch(message) {
   requests.set(id, controller);
   try {
     const operation = await buildOperation(params.name, Object.hasOwn(params, 'arguments') ? params.arguments : {});
-    const result = operation.status ? await bridge.status(controller.signal)
+    const result = operation.graphtec ? await prepareJobFile(bridge,operation.graphtec,{signal:controller.signal})
+      : operation.status ? await bridge.status(controller.signal)
       : await bridge.run(operation.code, { ...operation, signal: controller.signal });
     const content = [{ type: 'text', text: JSON.stringify(result) }];
     if (operation.preview && result.previewPath) {

@@ -1,8 +1,26 @@
 # CorelDRAW MCP for macOS
 
-A local [Model Context Protocol](https://modelcontextprotocol.io/) server that lets an AI assistant inspect and edit CorelDRAW drawings on macOS. Create editable geometry and text, manage pages and layers, personalize artwork, inspect production details, and save or export through **47 tools**.
+A local [Model Context Protocol](https://modelcontextprotocol.io/) server that lets an AI assistant inspect and edit CorelDRAW drawings on macOS. Create editable geometry and text, manage pages and layers, personalize artwork, inspect production details, and save or export through **48 tools**.
 
 The server uses Node.js built-ins and a small Swift Accessibility helper to run JavaScript through CorelDRAW's Scripts inspector. Your MCP client starts it on demand over **stdio**; there is no web service to deploy or listening port to configure.
+
+## Graphtec print-and-cut
+
+Version 0.4.0 adds a **Graphtec Sender** Mac app and CorelDRAW registration-mark
+preparation. It copies artwork to a new page, adds printable Type 2 marks, and keeps
+the cut paths nonprinting. The sender previews and exports jobs and can send
+geometry over TCP after manual four-point alignment on the CE8000.
+
+```sh
+./scripts/build-sender.sh
+open 'dist/Graphtec Sender.app'
+```
+
+Automatic optical ARMS scanning is not implemented; direct CE8000 network cutting
+still needs physical pen-test validation. Socket delivery does not establish cut
+completion. No Illustrator or CM5 dependency is required. Read the
+[workflow and first-use checks](docs/graphtec-print-cut.md) and
+[sender app guide](sender/README.md) before sending a job.
 
 ## Requirements
 
@@ -124,6 +142,7 @@ All names below are the complete MCP tool names. Read-only MCP resources `coreld
 | Pages and layer control | `coreldraw_list_pages`, `coreldraw_add_pages`, `coreldraw_activate_page`, `coreldraw_set_page_size`, `coreldraw_rename_page`, `coreldraw_activate_layer`, `coreldraw_set_layer_properties` |
 | Object and text operations | `coreldraw_duplicate_objects`, `coreldraw_delete_objects`, `coreldraw_convert_to_curves`, `coreldraw_get_text`, `coreldraw_set_text` |
 | Inspection and production | `coreldraw_find_objects`, `coreldraw_inspect_curve`, `coreldraw_production_preflight` |
+| Graphtec print-and-cut | `coreldraw_prepare_graphtec_job` |
 
 ### Files and previews
 

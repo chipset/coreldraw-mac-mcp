@@ -51,6 +51,13 @@ test('tool catalog has explicit schemas and no unbounded object serialization', 
   }
 });
 
+test('Graphtec preparation validates explicit targeting and produces a local preparation action',async()=>{
+  const operation=await buildOperation('coreldraw_prepare_graphtec_job',{document:'name:Stickers',outputPath:'/tmp/new.graphtec.json'});
+  assert.equal(operation.graphtec.document,'name:Stickers');
+  await assert.rejects(buildOperation('coreldraw_prepare_graphtec_job',{outputPath:'/tmp/new.graphtec.json'}),/document/);
+  await assert.rejects(buildOperation('coreldraw_prepare_graphtec_job',{document:'name:Stickers',outputPath:'/tmp/new.json',send:true}),/Unknown argument/);
+});
+
 test('empty document inspection returns a bounded plain result', async () => {
   const operation = await buildOperation('coreldraw_inspect_document', {});
   assert.deepEqual(execute(operation, { Documents: { Count: 0 } }), {

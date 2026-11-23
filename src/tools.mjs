@@ -19,6 +19,10 @@ const makeTool = (name, description, properties = {}, required = [], readOnly = 
 
 export const tools = [
   makeTool('coreldraw_status', 'Inspect installed/running CorelDRAW, Accessibility permission, and desktop session readiness. Does not launch CorelDRAW or change its UI.', {}, [], true),
+  makeTool('coreldraw_prepare_graphtec_job', 'Copy the source page printable artwork and a named closed-curve cut layer to a NEW page with printable Graphtec Type 2 marks and nonprinting cut paths; write a new JSON job for Graphtec Sender. Does not contact or move the cutter. Manual four-point panel alignment and matching GP-GL settings are required before sending.', {
+    document:documentProperty,outputPath:{type:'string',minLength:1,maxLength:4096},cutLayer:{type:'string',minLength:1,maxLength:255},
+    sheetWidthMm:dimension,sheetHeightMm:dimension,lengthMm:{type:'number',minimum:5,maximum:20},thicknessMm:{type:'number',minimum:.3,maximum:1},gapMm:{type:'number',minimum:0,maximum:1000},name:{type:'string',minLength:1,maxLength:200},
+  },['document','outputPath']),
   ...documentTools,
   makeTool('coreldraw_inspect_document', 'Read bounded document metadata, page size, units and object counts. An omitted selector reads the active document.', { document: documentProperty }, [], true),
   makeTool('coreldraw_create_document', 'Create a new named CorelDRAW document with a single page measured in millimeters (Corel unit enum 3). Returns its selector.', {
@@ -72,6 +76,7 @@ export async function buildOperation(name, args = {}) {
   if (!tool) throw new Error(`Unknown tool: ${name}`);
   validateSchema(tool.inputSchema, args);
   switch (name) {
+    case 'coreldraw_prepare_graphtec_job': return {graphtec:args};
     case 'coreldraw_status': return { status: true };
     case 'coreldraw_list_documents': return {code: documentRuntime + `var out=[];if(host.Documents.Count>100)throw new Error('Document count exceeds 100');for(var i=1;i<=host.Documents.Count;i++)out.push(describeDocument(host.Documents.Item(i)));return {documentCount:host.Documents.Count,documents:out};`};
     case 'coreldraw_inspect_document': return { code: !args.document ? documentRuntime + `if(host.Documents.Count<1)return {documentCount:0,activeDocument:null};return {documentCount:host.Documents.Count,activeDocument:describeDocument(host.ActiveDocument)};` : documentScript(args, 'return {documentCount:host.Documents.Count,document:describeDocument(doc)};') };

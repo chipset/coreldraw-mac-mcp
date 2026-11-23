@@ -1,6 +1,6 @@
 # CorelDRAW editor tools
 
-The server exposes 47 tools for English CorelDRAW 2021 on macOS. This guide covers drawing, styling, layout, files and reusable workflows; see the [README](../README.md) for page controls, text operations and inspection. A schema test or mocked object-model test does not establish native API support, visual quality or machine readiness.
+The server exposes 48 tools for English CorelDRAW 2021 on macOS. This guide covers drawing, styling, layout, files and reusable workflows; see the [README](../README.md) for page controls, text operations and inspection. A schema test or mocked object-model test does not establish native API support, visual quality or machine readiness.
 
 ## Choose the drawing first
 

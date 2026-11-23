@@ -15,7 +15,7 @@ available; it is not a headless rendering service.
 | Component | Responsibility |
 | --- | --- |
 | `src/server.mjs` | JSON-RPC, MCP initialization, tool/resource discovery, cancellation and image responses |
-| `src/tools.mjs` | The 47-tool catalog, bounded input validation and operation dispatch |
+| `src/tools.mjs` | The 48-tool catalog, bounded input validation and operation dispatch |
 | `src/document.mjs` | Document selectors, scalar snapshots, group traversal and named Undo groups |
 | `src/editor.mjs` | Vector creation, styling, layout, selection and native effects |
 | `src/object-operations.mjs` | Duplication, deletion, curve conversion and text read/write |

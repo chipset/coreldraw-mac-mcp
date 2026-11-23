@@ -4,6 +4,8 @@ node_modules/
 .build/
 native/.build/
 native/.swiftpm/
+sender/.swiftpm/
+dist/
 native/coreldraw-bridge
 
 # Generated validation output and local artwork
