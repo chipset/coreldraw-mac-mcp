@@ -1,0 +1,15 @@
+{
+  "name": "coreldraw-mcp-macos",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Local stdio MCP bridge for CorelDRAW on macOS",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/server.mjs && node --check src/tools.mjs && node --check src/bridge.mjs && node --check src/document.mjs && node --check src/editor.mjs && node --check src/files.mjs && node --check src/workflows.mjs && node --check src/pages.mjs && node --check src/inspection.mjs && node --check src/object-operations.mjs",
+    "native:consolidation": "node examples/accept-consolidation.mjs"
+  }
+}

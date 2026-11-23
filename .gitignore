@@ -1,0 +1,31 @@
+# macOS and local dependency/build output
+.DS_Store
+node_modules/
+.build/
+native/.build/
+native/.swiftpm/
+native/coreldraw-bridge
+
+# Generated validation output and local artwork
+artifacts/
+*.log
+*.cdr
+*.CDR
+*.cdt
+*.CDT
+examples/probe.js
+examples/probe-files.mjs
+
+# Local credentials and agent/runtime state
+.env
+.env.*
+!.env.example
+.cache/
+.omx/
+.superpowers/
+
+# Local development history; public documentation lives in README and docs guides
+docs/verification.md
+docs/consolidation-*.md
+docs/handoff-*.md
+docs/superpowers/
